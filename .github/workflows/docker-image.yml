@@ -1,0 +1,72 @@
+name: CI/CD Workflow for doc_to_pdf
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Build and Test Project
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up Node.js for Frontend
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+          cache: 'npm'
+
+      # Install and build the frontend
+      - name: Install Frontend Dependencies
+        working-directory: doc_to_pdf
+        run: npm install
+
+      - name: Build Frontend
+        working-directory: doc_to_pdf
+        run: npm run build
+
+      # Set up Python for Backend
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # Install Backend Dependencies
+      - name: Install Python Dependencies
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Lint Python Code
+      - name: Lint Python Code
+        working-directory: backend
+        run: |
+          pip install flake8
+          flake8 .
+
+      # Run Backend
+      - name: Run Backend
+        working-directory: backend
+        run: |
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 5  # Wait for the backend to start
+
+  deploy:
+    name: Deploy Project
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Example step to deploy - replace with your actual deployment strategy
+      - name: Deploy to Server
+        run: echo "Deploying project..."
