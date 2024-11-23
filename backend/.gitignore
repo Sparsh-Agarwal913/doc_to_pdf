@@ -1,0 +1,41 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+myenv/
+*.env
+.env
+
+# Byte-compiled files
+*.pyc
+
+# Logs and debug files
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Uploads and generated files
+uploads/
+pdfs/
+temp_files/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Dependency files
+*.egg-info/
+pip-log.txt
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
